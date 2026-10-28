@@ -125,7 +125,7 @@ cat <<EOF
 
 ${G}NvChad is installed.${N} Open a new shell on ROMEO (or: hash -r), then:
 
-    nvim file.cpp        # <leader> is space: <space>ff find files, <space>fg grep, <space>e tree, <space>ch cheatsheet
+    nvim file.cpp        # <space>ff files, <space>fg grep, <space>e tree, <space>ch all the keys
     nvim +checkhealth    # if something does not work
 
 Update: cd $ROOT && git pull && ./install.sh
