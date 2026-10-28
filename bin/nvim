@@ -1,0 +1,11 @@
+#!/usr/bin/env bash
+# nvim with what NvChad needs in PATH (ripgrep, Node.js, the tree-sitter stand-in), for the architecture of this node:
+# x86_64 on the login nodes, aarch64 on the Grace Hopper nodes. Linked as ~/.local/bin/nvim by install.sh.
+PREFIX=${NVCHAD_ROMEO_PREFIX:-${XDG_DATA_HOME:-$HOME/.local/share}/nvchad-romeo}/$(uname -m)
+if [ ! -x "$PREFIX/nvim/bin/nvim" ]; then
+  root=$(cd "$(dirname "$(readlink -f "${BASH_SOURCE[0]}")")/.." && pwd)
+  echo "nvchad-romeo: Neovim is not installed for $(uname -m) on this node: run $root/install.sh here" >&2
+  exit 1
+fi
+export PATH=$PREFIX/bin:$PATH
+exec "$PREFIX/nvim/bin/nvim" "$@"

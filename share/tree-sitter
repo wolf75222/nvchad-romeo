@@ -1,0 +1,34 @@
+#!/usr/bin/env bash
+# Stand-in for the tree-sitter CLI, which nvim-treesitter needs to compile parsers: the official binaries need
+# glibc 2.39 and ROMEO has 2.34. nvim-treesitter only runs `tree-sitter build -o parser.so` in the parser's directory
+# (and `tree-sitter generate` for a few parsers without a generated parser.c, not supported here). Same flags as the
+# real CLI: -O2, -fPIC, -shared, src/ in the include path.
+set -euo pipefail
+
+case ${1:-} in
+  --version|-V) echo "tree-sitter 0.26.1 (nvchad-romeo stand-in, compiles with ${CC:-cc})" ;;
+  build)
+    shift
+    out=parser.so
+    while [ $# -gt 0 ]; do
+      case $1 in
+        -o|--output) out=$2; shift 2 ;;
+        -*) shift ;;
+        *) cd "$1"; shift ;;
+      esac
+    done
+    cc=${CC:-cc} cxx=${CXX:-c++}
+    flags=(-O2 -fPIC -shared -Isrc)
+    if [ -f src/scanner.cc ]; then
+      "$cxx" "${flags[@]}" -x c src/parser.c -x c++ src/scanner.cc -lstdc++ -o "$out"
+    elif [ -f src/scanner.c ]; then
+      "$cc" "${flags[@]}" -std=c11 src/parser.c src/scanner.c -o "$out"
+    else
+      "$cc" "${flags[@]}" -std=c11 src/parser.c -o "$out"
+    fi
+    ;;
+  *)
+    echo "tree-sitter $*: not available on ROMEO (nvchad-romeo only compiles parsers that ship a parser.c)" >&2
+    exit 1
+    ;;
+esac
