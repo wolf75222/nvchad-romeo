@@ -2,6 +2,8 @@
 
 [NvChad](https://nvchad.com/) on the [ROMEO](https://romeo.univ-reims.fr/) cluster: one command installs Neovim, NvChad, the Treesitter parsers and the LSP servers in your home, without root, then `nvim` works as on your computer. C++, CUDA, Python, Lua, shell, CMake, JSON, YAML: completion, diagnostics, go to definition, formatting on save.
 
+![The install command run on a computer, then nvim over ssh on ROMEO: the NvChad dashboard, a file found with Telescope, the error clangd reports and its fix, completion, clang-format on save, the file tree](img/nvchad-romeo.gif)
+
 ## Install
 
 On your computer, once `ssh romeo` logs you into ROMEO:
